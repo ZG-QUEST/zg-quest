@@ -40,7 +40,7 @@
       <header class="game-header">
         <div class="player-info">
           <span id="player-name-display">Gracz</span>
-          <span id="player-rank" class="rank-badge">Początkujący</span>
+          <span id="player-rank" class="rank-badge">🌱 Początkujący</span>
         </div>
         <div class="score-board">
           ⭐ <span id="player-score">0</span> pkt
@@ -48,21 +48,21 @@
       </header>
 
       <div id="map"></div>
-
-      <!-- PANEL MISJI (POJAWIA SIĘ PO KLIKNIĘCIU W PINEZKĘ) -->
-      <div id="mission-panel" class="mission-modal hidden">
-        <div class="modal-content">
-          <h3 id="mission-title">Tytuł Misji</h3>
-          <p id="mission-question">Treść zagadki...</p>
-          <input type="text" id="mission-answer" placeholder="Twoja odpowiedź...">
-          <div class="modal-buttons">
-            <button class="btn-primary" onclick="checkAnswer()">Sprawdź</button>
-            <button class="btn-secondary" onclick="closeMission()">Zamknij</button>
-          </div>
-        </div>
-      </div>
     </main>
 
+  </div>
+
+  <!-- PANEL MISJI (NAKŁADKA) -->
+  <div id="mission-panel" class="mission-modal hidden">
+    <div class="modal-content">
+      <h3 id="mission-title">Tytuł Misji</h3>
+      <p id="mission-question">Treść zagadki...</p>
+      <input type="text" id="mission-answer" placeholder="Twoja odpowiedź...">
+      <div class="modal-buttons">
+        <button class="btn-primary" onclick="checkAnswer()">Sprawdź</button>
+        <button class="btn-secondary" onclick="closeMission()">Zamknij</button>
+      </div>
+    </div>
   </div>
 
   <script src="game.js"></script>
