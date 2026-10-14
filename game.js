@@ -1,38 +1,11 @@
 let map;
 let userMarker;
 
-// Lista misji w Zielonej Górze
 const missions = [
-  {
-    id: 1,
-    title: "Pomnik Bachusa",
-    lat: 51.9386,
-    lng: 15.5050,
-    question: "Jak nazywa się słynny zielonogórski bożek wina?",
-    answer: "bachus",
-    reward: 100
-  },
-  {
-    id: 2,
-    title: "Palmiarnia",
-    lat: 51.9360,
-    lng: 15.5120,
-    question: "Co rośnie wokół Palmiarni na Winnym Wzgórzu?",
-    answer: "winorośl",
-    reward: 150
-  },
-  {
-    id: 3,
-    title: "Ratusz Miejski",
-    lat: 51.9380,
-    lng: 15.5065,
-    question: "Ile wież ma ratusz na Starym Rynku?",
-    answer: "1",
-    reward: 120
-  }
+  { id: 1, title: "Pomnik Bachusa", lat: 51.9386, lng: 15.5050 },
+  { id: 2, title: "Palmiarnia", lat: 51.9360, lng: 15.5120 },
+  { id: 3, title: "Ratusz Miejski", lat: 51.9380, lng: 15.5065 }
 ];
-
-let activeMission = null;
 
 function startGame() {
   const username = document.getElementById('username').value.trim();
@@ -42,22 +15,23 @@ function startGame() {
     return;
   }
 
-  // Zapisujemy nick w pamięci przeglądarki
   localStorage.setItem('zg_quest_username', username);
 
-  // Przełączanie ekranów
   document.getElementById('screen-start').classList.remove('active');
   document.getElementById('screen-map').classList.add('active');
 
-  document.getElementById('welcome-msg').innerText = `Witaj, ${username}! Znajdź punkty na mapie Zielonej Góry.`;
-
-  initMap();
+  // Opóźnienie inicjalizacji mapy, aby kontener zdążył się pojawić na ekranie
+  setTimeout(() => {
+    initMap();
+  }, 100);
 }
 
 function initMap() {
-  if (map) return;
+  if (map) {
+    map.invalidateSize();
+    return;
+  }
 
-  // Inicjalizacja mapy Leaflet wyśrodkowanej na Zielonej Górze
   map = L.map('map').setView([51.9356, 15.5061], 14);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -65,13 +39,11 @@ function initMap() {
     attribution: '© OpenStreetMap'
   }).addTo(map);
 
-  // Dodawanie markerów misji
   missions.forEach(mission => {
-    const marker = L.marker([mission.lat, mission.lng]).addTo(map);
-    marker.bindPopup(`<b>${mission.title}</b><br><br>Kliknij, aby podjąć wyzwanie!`);
+    L.marker([mission.lat, mission.lng]).addTo(map)
+      .bindPopup(`<b>${mission.title}</b>`);
   });
 
-  // Śledzenie lokalizacji GPS gracza
   if (navigator.geolocation) {
     navigator.geolocation.watchPosition(
       (pos) => {
@@ -89,7 +61,7 @@ function initMap() {
           userMarker.setLatLng([lat, lng]);
         }
       },
-      (err) => console.log('Brak dostępu do GPS lub odmowa', err),
+      (err) => console.log('Brak GPS', err),
       { enableHighAccuracy: true }
     );
   }
