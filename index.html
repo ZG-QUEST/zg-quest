@@ -3,48 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZG QUEST</title>
+  <title>ZG QUEST - Gra Miejska</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Biblioteka Leaflet do obsługi mapy -->
+  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
   <div class="container">
-    <!-- Ekran Startowy -->
+    
+    <!-- EKRAN STARTOWY -->
     <main id="screen-start" class="screen active">
-      <header>
-        <h1>ZG QUEST</h1>
-        <p class="subtitle">Odkrywaj Zieloną Górę</p>
-      </header>
+      <div class="hero-section">
+        <h1 class="glow-text">ZG QUEST</h1>
+        <p class="subtitle">Wyprawa po tajemnicach Zielonej Góry</p>
+      </div>
 
-      <section class="rules-card">
-        <h2>Zasady bezpieczeństwa</h2>
+      <div class="card rules-card">
+        <h2>📜 Zasady Gry</h2>
         <ul>
-          <li>Bądź uważny na drodze i przejściach.</li>
-          <li>Rozwiązuj misje w bezpiecznych miejscach.</li>
+          <li>Wędruj po Zielonej Górze i szukaj punktów.</li>
+          <li>Rozwiązuj zagadki na mapie, aby zdobywać punkty.</li>
+          <li>Awansuj na wyższe rangi i zostań Legendą!</li>
         </ul>
-      </section>
+      </div>
 
-      <section class="form-group">
-        <label for="username">Wpisz swój nick:</label>
-        <input type="text" id="username" placeholder="Twój pseudonim..." maxlength="15">
-      </section>
-
-      <button id="btn-start" onclick="startGame()">Graj</button>
+      <div class="card form-card">
+        <label for="username">Twój pseudonim:</label>
+        <input type="text" id="username" placeholder="Wpisz nick..." maxlength="15">
+        <button id="btn-start" class="btn-primary" onclick="startGame()">Rozpocznij Przygodę 🚀</button>
+      </div>
     </main>
 
-    <!-- Ekran Mapy -->
+    <!-- EKRAN MAPI I ROZGRYWKI -->
     <main id="screen-map" class="screen">
-      <header>
-        <h2>Mapa Zielonej Góry</h2>
-        <p id="welcome-msg" class="subtitle"></p>
+      <header class="game-header">
+        <div class="player-info">
+          <span id="player-name-display">Gracz</span>
+          <span id="player-rank" class="rank-badge">Początkujący</span>
+        </div>
+        <div class="score-board">
+          ⭐ <span id="player-score">0</span> pkt
+        </div>
       </header>
+
       <div id="map"></div>
+
+      <!-- PANEL MISJI (POJAWIA SIĘ PO KLIKNIĘCIU W PINEZKĘ) -->
+      <div id="mission-panel" class="mission-modal hidden">
+        <div class="modal-content">
+          <h3 id="mission-title">Tytuł Misji</h3>
+          <p id="mission-question">Treść zagadki...</p>
+          <input type="text" id="mission-answer" placeholder="Twoja odpowiedź...">
+          <div class="modal-buttons">
+            <button class="btn-primary" onclick="checkAnswer()">Sprawdź</button>
+            <button class="btn-secondary" onclick="closeMission()">Zamknij</button>
+          </div>
+        </div>
+      </div>
     </main>
+
   </div>
 
   <script src="game.js"></script>
 </body>
 </html>
-
