@@ -5,21 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZG QUEST</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Biblioteka Leaflet do obsługi mapy -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
   <div class="container">
+    <!-- Ekran Startowy -->
     <main id="screen-start" class="screen active">
       <header>
         <h1>ZG QUEST</h1>
         <p class="subtitle">Odkrywaj Zieloną Górę</p>
       </header>
+
+      <section class="rules-card">
+        <h2>Zasady bezpieczeństwa</h2>
+        <ul>
+          <li>Bądź uważny na drodze i przejściach.</li>
+          <li>Rozwiązuj misje w bezpiecznych miejscach.</li>
+        </ul>
+      </section>
+
       <section class="form-group">
         <label for="username">Wpisz swój nick:</label>
         <input type="text" id="username" placeholder="Twój pseudonim..." maxlength="15">
       </section>
+
       <button id="btn-start" onclick="startGame()">Graj</button>
     </main>
+
+    <!-- Ekran Mapy -->
+    <main id="screen-map" class="screen">
+      <header>
+        <h2>Mapa Zielonej Góry</h2>
+        <p id="welcome-msg" class="subtitle"></p>
+      </header>
+      <div id="map"></div>
+    </main>
   </div>
+
   <script src="game.js"></script>
 </body>
 </html>
+
