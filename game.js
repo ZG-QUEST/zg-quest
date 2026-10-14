@@ -4,7 +4,6 @@ let score = 0;
 let currentMission = null;
 const completedMissions = [];
 
-// Baza misji w Zielonej Górze z zagadkami i nagrodami
 const missions = [
   {
     id: 1,
@@ -51,7 +50,7 @@ function startGame() {
 
   setTimeout(() => {
     initMap();
-  }, 100);
+  }, 150);
 }
 
 function initMap() {
@@ -60,7 +59,6 @@ function initMap() {
     return;
   }
 
-  // Inicjalizacja mapy Zielonej Góry
   map = L.map('map').setView([51.9356, 15.5061], 15);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -68,7 +66,6 @@ function initMap() {
     attribution: '© OpenStreetMap'
   }).addTo(map);
 
-  // Dodawanie markerów dla misji
   missions.forEach(mission => {
     const marker = L.marker([mission.lat, mission.lng]).addTo(map);
     
@@ -77,7 +74,6 @@ function initMap() {
     });
   });
 
-  // GPS gracza
   if (navigator.geolocation) {
     navigator.geolocation.watchPosition(
       (pos) => {
@@ -120,7 +116,10 @@ function closeMission() {
 }
 
 function checkAnswer() {
-  const userAnswer = document.getElementById('mission-answer').value.trim().toLowerCase();
+  const answerInput = document.getElementById('mission-answer');
+  if (!answerInput || !currentMission) return;
+  
+  const userAnswer = answerInput.value.trim().toLowerCase();
 
   if (userAnswer === currentMission.answer) {
     score += currentMission.reward;
