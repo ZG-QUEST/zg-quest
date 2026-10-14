@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZG QUEST - Wielka Gra Miejska 🌈✨</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <!-- Odtwarzacz muzyki w tle -->
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Pływające tło z emotkami -->
+  <div class="floating-emojis">
+    <span class="floating-emoji e1">🍇</span>
+    <span class="floating-emoji e2">🍷</span>
+    <span class="floating-emoji e3">👑</span>
+    <span class="floating-emoji e4">⭐</span>
+    <span class="floating-emoji e5">🚀</span>
+    <span class="floating-emoji e6">🎯</span>
+    <span class="floating-emoji e7">🎉</span>
+    <span class="floating-emoji e8">🏆</span>
+  </div>
+
+  <div class="container">
+    
+    <!-- EKRAN STARTOWY -->
+    <main id="screen-start" class="screen active">
+      <div class="hero-section">
+        <h1 class="glow-text">✨ ZG QUEST ✨</h1>
+        <p class="subtitle">🍇 Wielka Tęczowa Wyprawa po Zielonej Górze 🍷</p>
+        <span class="creator-badge">💖 Stworzone przez: Navi-rizzuje 🔥</span>
+      </div>
+
+      <div class="card rules-card animated-card">
+        <h2>📜 Zasady Przygody 🚀</h2>
+        <ul>
+          <li>🗺️ Odkryj 30 wyjątkowych miejsc w całym mieście.</li>
+          <li>🧩 Rozwiązuj zagadki, zbieraj pkt i zdobywaj nowe rangi.</li>
+          <li>👑 Awansuj na najwyższy poziom i zostań Legendą ZG!</li>
+        </ul>
+      </div>
+
+      <div class="card form-card animated-card">
+        <label for="username">🎮 Twój Pseudonim:</label>
+        <input type="text" id="username" placeholder="Wpisz nick..." maxlength="15">
+        <button id="btn-start" class="btn-primary pulse-btn" onclick="startGame()">Rozpocznij Przygodę 🚀✨</button>
+      </div>
+    </main>
+
+    <!-- EKRAN GŁÓWNY -->
+    <main id="screen-game" class="screen">
+      
+      <!-- GÓRNY PANEL INFORMACYJNY -->
+      <header class="game-header">
+        <div class="player-info">
+          <span id="player-name-display">🎮 Gracz</span>
+          <span id="player-rank" class="rank-badge">🌱 Początkujący</span>
+        </div>
+        <div class="header-right-controls">
+          <button id="btn-music-toggle" class="music-toggle-btn pulse-music" onclick="toggleMusic()" title="Włącz/Wyłącz muzykę">🎵</button>
+          <div class="score-board glow-score">
+            ⭐ <span id="player-score">0</span> pkt
+          </div>
+        </div>
+      </header>
+
+      <!-- PASEK POSTĘPU DO KOLEJNEJ RANGI -->
+      <div class="progress-container">
+        <div class="progress-info">
+          <span id="progress-text">🚀 Postęp do kolejnej rangi:</span>
+          <span id="progress-points">0 / 300 pkt</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="progress-bar-fill" class="progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- ZAKŁADKA 1: MAPA -->
+      <div id="tab-map" class="tab-content active">
+        <div id="map"></div>
+      </div>
+
+      <!-- ZAKŁADKA 2: LISTA MISJI (30 PUNKTÓW) -->
+      <div id="tab-missions" class="tab-content">
+        <h2 class="rainbow-title">🎯 Wyzwania ZG (30 Misji)</h2>
+        <p class="subtitle" style="margin-bottom: 12px;">Dotknij misję, aby rozwiązać zagadkę! 🔍</p>
+        <div id="missions-list" class="missions-scroll-list">
+          <!-- Generowane dynamicznie przez JS -->
+        </div>
+      </div>
+
+      <!-- ZAKŁADKA 3: PROFIL I RANGI -->
+      <div id="tab-profile" class="tab-content">
+        <div class="card animated-card">
+          <h2>🏆 Twój Profil Odkrywcy</h2>
+          <p>👤 <strong>Pseudonim:</strong> <span id="profile-name" class="highlight-text">-</span></p>
+          <p>👑 <strong>Aktualna Ranga:</strong> <span id="profile-rank-name" class="highlight-badge">Początkujący</span></p>
+          <p>✅ <strong>Ukończone misje:</strong> <span id="profile-completed-count" class="highlight-num">0</span> / 30</p>
+          <p>⭐ <strong>Zdobyte punkty:</strong> <span id="profile-total-score" class="highlight-num">0</span></p>
+        </div>
+        
+        <div class="card animated-card">
+          <h2>🌈 Tęczowy System Rang</h2>
+          <ul class="rank-list">
+            <li>🌱 <strong>Początkujący</strong> (0 - 299 pkt)</li>
+            <li>⭐ <strong>Zwiadowca Winnego Grodu</strong> (300 - 699 pkt)</li>
+            <li>🦊 <strong>Znawca Sekretów</strong> (700 - 1199 pkt)</li>
+            <li>👑 <strong>Legenda Zielonej Góry</strong> (1200+ pkt)</li>
+          </ul>
+        </div>
+
+        <div class="card animated-card" style="text-align: center;">
+          <p style="font-size: 0.85rem; color: var(--text-muted);">✨ ZG QUEST v3.0 Ultra-Rainbow ✨</p>
+          <p style="font-size: 0.95rem; color: #f43f5e; margin-top: 6px; font-weight: bold;">Stworzone przez: Navi-rizzuje 🔥💖</p>
+        </div>
+      </div>
+
+      <!-- DOLNA NAWIGACJA -->
+      <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="switchTab('map', event)">
+          <span>🗺️</span> Mapa
+        </button>
+        <button class="nav-btn" onclick="switchTab('missions', event)">
+          <span>🎯</span> Misje
+        </button>
+        <button class="nav-btn" onclick="switchTab('profile', event)">
+          <span>🏆</span> Profil
+        </button>
+      </nav>
+    </main>
+
+  </div>
+
+  <!-- PANEL ZAGADKI (MODAL) -->
+  <div id="mission-panel" class="mission-modal hidden">
+    <div class="modal-content pop-anim">
+      <div class="modal-img-container">
+        <img id="mission-img" src="" alt="Zdjęcie misji">
+      </div>
+      <h3 id="mission-title">✨ Tytuł Misji</h3>
+      <p id="mission-question">Treść zagadki...</p>
+      <input type="text" id="mission-answer" placeholder="✍️ Twoja odpowiedź...">
+      <div class="modal-buttons">
+        <button class="btn-primary pulse-btn" onclick="checkAnswer()">Sprawdź 🎯</button>
+        <button class="btn-secondary" onclick="closeMission()">Zamknij ❌</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
