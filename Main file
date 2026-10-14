@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ZG QUEST — Zielona Góra</title>
+  
+  <!-- Styl do Leaflet.js (Mapa) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- EKRAN 1: START -->
+    <main id="screen-start" class="screen active">
+      <header class="hero">
+        <div class="logo-badge">ZG</div>
+        <h1>ZG QUEST</h1>
+        <p class="tagline">Odkryj tajemnice Zielonej Góry</p>
+      </header>
+
+      <div class="card rules-card">
+        <h3>🛡️ Zasady bezpieczeństwa</h3>
+        <ul>
+          <li>Bądź uważny na drodze i przejściach dla pieszych.</li>
+          <li>Rozwiązuj misje tylko w bezpiecznych, publicznych miejscach.</li>
+          <li>Inni gracze <strong>nie widzą</strong> Twojej pozycji na żywo.</li>
+        </ul>
+      </div>
+
+      <div class="card form-card">
+        <label for="username">Wybierz swój nick w grze:</label>
+        <input type="text" id="username" placeholder="Twój pseudonim..." maxlength="15" autocomplete="off">
+      </div>
+
+      <button class="btn-primary" onclick="startApp()">Rozpocznij przygodę</button>
+    </main>
+
+    <!-- EKRAN 2: MAPA -->
+    <main id="screen-map" class="screen">
+      <header class="top-bar">
+        <div class="user-info">
+          <span id="player-name-display">Gracz</span>
+          <span class="badge" id="player-xp">0 XP</span>
+        </div>
+      </header>
+
+      <div id="map"></div>
+
+      <div class="bottom-nav">
+        <button class="nav-btn active" onclick="showScreen('screen-map')">🗺️ Mapa</button>
+        <button class="nav-btn" onclick="showScreen('screen-profile')">👤 Profil</button>
+      </div>
+    </main>
+
+    <!-- EKRAN 3: DANE MISJI (MODAL) -->
+    <div id="mission-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeMission()">&times;</span>
+        <h2 id="mission-title">Tytuł misji</h2>
+        <p class="mission-desc" id="mission-desc">Opis misji pojawi się tutaj...</p>
+        
+        <div class="mission-reward">
+          <span>Nagroda:</span> <strong id="mission-xp">+50 XP</strong>
+        </div>
+
+        <div class="answer-box">
+          <input type="text" id="mission-answer" placeholder="Wpisz odpowiedź..." autocomplete="off">
+          <button class="btn-primary" onclick="submitMission()">Wyślij odpowiedź</button>
+        </div>
+        <p id="mission-feedback" class="feedback-msg"></p>
+      </div>
+    </div>
+
+    <!-- EKRAN 4: PROFIL -->
+    <main id="screen-profile" class="screen">
+      <header class="hero">
+        <h2>Twój Profil</h2>
+      </header>
+
+      <div class="card profile-card">
+        <div class="stat-row">
+          <span>Pseudonim:</span>
+          <strong id="profile-nick">-</strong>
+        </div>
+        <div class="stat-row">
+          <span>Punkty doświadczenia:</span>
+          <strong id="profile-xp">0 XP</strong>
+        </div>
+        <div class="stat-row">
+          <span>Ukończone misje:</span>
+          <strong id="profile-completed">0 / 3</strong>
+        </div>
+      </div>
+
+      <button class="btn-secondary" onclick="showScreen('screen-map')">Powrót do mapy</button>
+      <button class="btn-danger" onclick="resetProgress()">Zresetuj postęp</button>
+    </main>
+
+  </div>
+
+  <!-- Skrypt do Leaflet.js (Mapa) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
